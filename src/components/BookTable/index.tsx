@@ -26,10 +26,10 @@ export default function BookTable({
 
   const sortedBooks = useMemo(() => {
     books.sort((prev, next) => {
-      const prevPublishDate = prev.publish_date?.length ? prev.publish_date[0] : '';
-      const nextPublishDate = next.publish_date?.length ? next.publish_date[0] : '';
-      if (prevPublishDate > nextPublishDate) return isPublishDescent ? 1 : -1;
-      if (nextPublishDate > prevPublishDate) return isPublishDescent ? -1 : 1;
+      const prevPublishYear = prev.publish_year?.length ? prev.publish_year[0] : '';
+      const nextPublishYear = next.publish_year?.length ? next.publish_year[0] : '';
+      if (prevPublishYear > nextPublishYear) return isPublishDescent ? 1 : -1;
+      if (nextPublishYear > prevPublishYear) return isPublishDescent ? -1 : 1;
       return 0;
     });
     return books;
@@ -45,7 +45,7 @@ export default function BookTable({
             className={`${classNames(headerColumnClassName, "md:w-1/6")} flex items-center cursor-pointer`}
             onClick={() => setIsPublishDescent(!isPublishDescent)}
           >
-            Publish Date
+            Publish Year
             <div className={arrowClassName} />
           </th>
           <th className={classNames(headerColumnClassName, "md:w-1/6")}>ISBN</th>
@@ -53,11 +53,11 @@ export default function BookTable({
         </tr>
       </thead>
       <tbody className="flex-1 sm:flex-none">
-        {sortedBooks.map(({ key, title, author_name, publish_date, isbn, number_of_pages_median }) => (
+        {sortedBooks.map(({ key, title, author_name, publish_year, isbn, number_of_pages_median }) => (
           <tr key={key} className="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
             <td className={columnClassName}>{ title }</td>
             <td className={columnClassName}>{ author_name }</td>
-            <td className={columnClassName}>{ publish_date?.length ? publish_date[0] : '' }</td>
+            <td className={columnClassName}>{ publish_year?.length ? publish_year[0] : '' }</td>
             <td className={columnClassName}>{ isbn?.length ? isbn[0] : '' }</td>
             <td className={columnClassName}>{ number_of_pages_median }</td>
           </tr>
