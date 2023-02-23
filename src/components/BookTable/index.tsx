@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import classNames from "classnames";
 
 import Book from "types/Book";
 
@@ -15,12 +16,12 @@ const headerColumnClassName = "p-3 text-left";
 export default function BookTable({
   books,
 }: BookTableProps) {
-  const [isPublishDescent, setIsPublishDescent] = useState(true);
+  const [isPublishDescent, setIsPublishDescent] = useState(false);
   const arrowClassName = useMemo(() => {
     const arrow = isPublishDescent
-      ? "border-x-8 border-x-transparent border-t-[16px] border-t-blue-600"
-      : "border-x-8 border-x-transparent border-b-[16px] border-b-blue-600";
-    return `h-0 w-0 ml-2 cursor-pointer ${arrow}`;
+      ? "border-x-8 border-x-transparent border-b-[16px] border-b-blue-600"
+      : "border-x-8 border-x-transparent border-t-[16px] border-t-blue-600";
+    return classNames("h-0 w-0 ml-2", arrow);
   }, [isPublishDescent]);
 
   const sortedBooks = useMemo(() => {
@@ -35,23 +36,21 @@ export default function BookTable({
   }, [books, isPublishDescent]);
 
   return (
-    <table className="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5">
+    <table className="w-full table-fixed">
       <thead className="text-white">
-        {Array.apply(null, Array(4)).map((value, index) => (
-          <tr key={index} className={headerRowClassName}>
-            <th className={headerColumnClassName}>Book Title</th>
-            <th className={headerColumnClassName}>Author Name</th>
-            <th className={`${headerColumnClassName} flex items-center`}>
-              Publish Date
-              <div
-                className={arrowClassName}
-                onClick={() => setIsPublishDescent(!isPublishDescent)}
-              />
-            </th>
-            <th className={headerColumnClassName}>ISBN</th>
-            <th className={headerColumnClassName}>Pages</th>
-          </tr>
-        ))}
+        <tr className={headerRowClassName}>
+          <th className={classNames(headerColumnClassName, "md:w-1/4")}>Book Title</th>
+          <th className={classNames(headerColumnClassName, "md:w-1/4")}>Author Name</th>
+          <th
+            className={`${classNames(headerColumnClassName, "md:w-1/6")} flex items-center cursor-pointer`}
+            onClick={() => setIsPublishDescent(!isPublishDescent)}
+          >
+            Publish Date
+            <div className={arrowClassName} />
+          </th>
+          <th className={classNames(headerColumnClassName, "md:w-1/6")}>ISBN</th>
+          <th className={classNames(headerColumnClassName, "md:w-1/6")}>Pages</th>
+        </tr>
       </thead>
       <tbody className="flex-1 sm:flex-none">
         {sortedBooks.map(({ key, title, author_name, publish_date, isbn, number_of_pages_median }) => (
